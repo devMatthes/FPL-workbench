@@ -10,7 +10,7 @@ class TopPlayers extends Component {
     }
 
     componentDidMount(){
-        fetch('http://localhost:5000/Pogba')
+        fetch('http://localhost:5000/topPlayers')
         .then(res => res.json())
         .then(data => {
             this.setState({

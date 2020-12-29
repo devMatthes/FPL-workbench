@@ -8,8 +8,7 @@ const { spawn } = require('child_process');
 
 async function topPlayers(req, res, next ) {
     try {
-        let dataToSend;
-        let dataToSendJSON;
+        let dataToSend = '';
 
         const python = spawn('python3', ['bestplayers.py']);
 
@@ -17,16 +16,38 @@ async function topPlayers(req, res, next ) {
             console.log('Pipe data from python script ...');
             dataToSend = data.toString();
 
-            // MAKE STRING VALID JSON
+            // MAKE STRING A VALID JSON
             dataToSend = "[" + dataToSend.replace(/}\s{/g, "},{") + "]";
-            dataToSendJSON = JSON.parse(dataToSend);
             // Set data to Redis
             //client.setex('Pogba', 3600, dataToSend);
         });
 
         python.on('close', (code) => {
             console.log(`child process close all stdio wtih code ${code}`);
-            res.send(dataToSendJSON);
+            res.json(JSON.parse(dataToSend));
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500);
+    }
+}
+
+async function allPlayers(req, res, next) {
+    try {
+        let dataToSend = '';
+
+        const python = spawn('python3', ['allplayers.py']);
+
+        python.stdout.on('data', function (data) {
+            console.log('Pipe data from python script ...');
+            dataToSend += data.toString();
+            // Set data to Redis
+            //client.setex('Pogba', 3600, dataToSend);
+        });
+
+        python.on('close', (code) => {
+            console.log(`child process close all stdio wtih code ${code}`);
+            res.json(JSON.parse(dataToSend));
         });
     } catch (error) {
         console.error(error);
@@ -36,7 +57,8 @@ async function topPlayers(req, res, next ) {
 
 app.use(cors());
 
-app.get('/Pogba', topPlayers);
+app.get('/topPlayers', topPlayers);
+app.get('/allPlayers', allPlayers);
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
