@@ -10,7 +10,7 @@ class TopPlayers extends Component {
     }
 
     componentDidMount(){
-        fetch('http://localhost:5000/topPlayers')
+        fetch('http://localhost:5000/allPlayers')
         .then(res => res.json())
         .then(data => {
             this.setState({
@@ -34,15 +34,17 @@ class TopPlayers extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                            {this.state.players.map((player) => {
-                                return (
-                                    <tr>
-                                        <td>{player.web_name}</td>
-                                        <td>{player.total_points}</td>
-                                        <td>{player.form}</td>
-                                    </tr>
-                                );
-                            })}
+                        {[].concat(this.state.players).sort((a,b) => b.total_points - a.total_points).slice(0, 5).map((player) => {
+                                    return (
+                                        <tr>
+                                            <td>{player.web_name}</td>
+                                            <td>{player.total_points}</td>
+                                            <td>{player.form}</td>
+                                        </tr>
+                                    );
+                                }
+                            )
+                        }
                     </tbody>
                 </table>
             </div>

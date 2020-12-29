@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "client": "cd client && npm start",
-    "server": "cd server && npm start",
+    "server": "cd server && nodemon index.js",
     "start": "concurrently --kill-others \"npm run server\" \"npm run client\""
   },
   "keywords": [],
@@ -13,5 +13,8 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "3.5.1"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.6"
   }
 }

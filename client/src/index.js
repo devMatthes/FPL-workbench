@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import TopPlayers from './views/TopPlayers';
+import TeamOfTheSeason from './views/Tots';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <TopPlayers />
+    <TeamOfTheSeason />
   </React.StrictMode>,
   document.getElementById('root')
 );
