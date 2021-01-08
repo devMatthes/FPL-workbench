@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import TopPlayers from './views/TopPlayers';
-import TeamOfTheSeason from './views/Tots';
+import TeamOfTheSeason from './components/Tots';
+import BestPlayers from './components/BestPlayers';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
