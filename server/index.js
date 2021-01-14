@@ -41,6 +41,9 @@ async function allPlayers(req, res, next) {
         python.stdout.on('data', function (data) {
             console.log('Pipe data from python script ...');
             dataToSend += data.toString();
+
+            // MAKE STRING A VALID JSON
+                // dataToSend = "[" + dataToSend.replace(/}\s{/g, "},{") + "]";
             // Set data to Redis
             //client.setex('Pogba', 3600, dataToSend);
         });
