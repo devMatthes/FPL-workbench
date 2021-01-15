@@ -6,18 +6,18 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 const { spawn } = require('child_process');
 
-async function topPlayers(req, res, next ) {
+async function playersUnderstat(req, res, next ) {
     try {
         let dataToSend = '';
 
-        const python = spawn('python3', ['bestplayers.py']);
+        const python = spawn('python3', ['understatAPI.py']);
 
         python.stdout.on('data', function (data) {
             console.log('Pipe data from python script ...');
-            dataToSend = data.toString();
+            dataToSend += data.toString();
 
             // MAKE STRING A VALID JSON
-            dataToSend = "[" + dataToSend.replace(/}\s{/g, "},{") + "]";
+            // dataToSend = "[" + dataToSend.replace(/}\s{/g, "},{") + "]";
             // Set data to Redis
             //client.setex('Pogba', 3600, dataToSend);
         });
@@ -60,7 +60,7 @@ async function allPlayers(req, res, next) {
 
 app.use(cors());
 
-app.get('/topPlayers', topPlayers);
+app.get('/stats', playersUnderstat);
 app.get('/allPlayers', allPlayers);
 
 app.listen(PORT, () => {
