@@ -3,6 +3,8 @@ import { FetchAllTeams } from "./FetchAllTeams";
 
 const API_URL = 'http://localhost:5000/allGameweeks';
 
+let solver = require("javascript-lp-solver/src/solver");
+
 const FetchCurrentGameweek = async () => {
     const response = await fetch(API_URL);
     const allPlayers = await response.json();
@@ -18,6 +20,9 @@ let teamStrength = 0;
 let teamAttack = 0;
 let teamDefense = 0;
 let teamFixes = 0;
+let size = 15;
+let budget = 1000;
+let currentBudget = 0;
 
 function RatePlayer(item) {
     let matchesPlayed = currentGameweek;
@@ -165,12 +170,39 @@ function RatePlayer(item) {
     ratedPlayers.push(item)
 }
 
+let finalPlayers = [];
+
+const solveKnapsack = async (players) => {
+    let model = {
+        "optimize": "value_index",
+        "opType": "max",
+        "constraints": {
+            "now_cost": {"max": 1000},
+            "web_name": {"max": 1}
+        },
+        "variables": players,
+        "ints": JSON.parse(JSON.stringify(players))
+    }
+
+    const keys = Object.keys(model.ints);
+    keys.forEach((key) => {
+        let obj = {};
+        obj[key] = 1;
+        model.ints[key] = obj
+    })  
+
+    let result = solver.Solve(model);
+    console.log(model, result);
+    return result;
+}
+
 const RatePlayers = async () => {
     const players_FPL = await AssignPlayersStats();
     allTeams = await FetchAllTeams();
     currentGameweek = await FetchCurrentGameweek();
     players_FPL.forEach(RatePlayer);
-    return ratedPlayers;
+    const knapsack = await solveKnapsack(ratedPlayers);
+    return knapsack;
 }
 
 export { RatePlayers }

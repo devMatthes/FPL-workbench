@@ -15,6 +15,7 @@
     "concurrently": "3.5.1"
   },
   "dependencies": {
+    "javascript-lp-solver": "^0.4.24",
     "nodemon": "^2.0.6"
   }
 }
