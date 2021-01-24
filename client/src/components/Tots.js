@@ -4,12 +4,12 @@ import { RatePlayers } from '../helpers/RateAllPlayers'
 const TOTS = () => {
 
     const [players, setPlayers] = useState([]);
-    let playersLimits = {'1': 2, '2': 5, '3': 5, '4': 3};
 
     useEffect(() => {
         (async () => {
             const ratedPlayers = await RatePlayers();
             setPlayers(ratedPlayers);
+            console.log(ratedPlayers);
         })();
     }, []);
 
@@ -29,7 +29,7 @@ const TOTS = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {[].concat(players).filter(x => x.element_type === 1).sort((a,b) => b.value_index - a.value_index).slice(0, 2).map((player) => {
+                        {[].concat(players).filter(x => x.element_type === 1).map((player) => {
                                 return (
                                     <tr key={player.id}>
                                         <td>GKP</td>
@@ -42,7 +42,7 @@ const TOTS = () => {
                             }
                         )
                     }
-                    {[].concat(players).filter(x => x.element_type === 2).sort((a,b) => b.value_index - a.value_index).slice(0, 5).map((player) => {
+                    {[].concat(players).filter(x => x.element_type === 2).sort((a,b) => b.value_index - a.value_index).map((player) => {
                                 return (
                                     <tr key={player.id}>
                                         <td>DEF</td>
@@ -55,7 +55,7 @@ const TOTS = () => {
                             }
                         )
                     }
-                    {[].concat(players).filter(x => x.element_type === 3).sort((a,b) => b.value_index - a.value_index).slice(0, 5).map((player) => {
+                    {[].concat(players).filter(x => x.element_type === 3).sort((a,b) => b.value_index - a.value_index).map((player) => {
                                 return (
                                     <tr key={player.id}>
                                         <td>MID</td>
@@ -68,7 +68,7 @@ const TOTS = () => {
                             }
                         )
                     }
-                    {[].concat(players).filter(x => x.element_type === 4).sort((a,b) => b.value_index - a.value_index).slice(0, 3).map((player) => {
+                    {[].concat(players).filter(x => x.element_type === 4).sort((a,b) => b.value_index - a.value_index).map((player) => {
                                 return (
                                     <tr key={player.id}>
                                         <td>FWD</td>

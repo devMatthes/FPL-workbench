@@ -170,15 +170,17 @@ function RatePlayer(item) {
     ratedPlayers.push(item)
 }
 
-let finalPlayers = [];
-
 const solveKnapsack = async (players) => {
     let model = {
         "optimize": "value_index",
         "opType": "max",
         "constraints": {
             "now_cost": {"max": 1000},
-            "web_name": {"max": 1}
+            "BR": {"equal": 1},
+            "OBR": {"max": 5},
+            "POM": {"max": 5},
+            "NAP": {"max": 3},
+            "nbPlayer": {"equal": 11},
         },
         "variables": players,
         "ints": JSON.parse(JSON.stringify(players))
@@ -191,9 +193,25 @@ const solveKnapsack = async (players) => {
         model.ints[key] = obj
     })  
 
+    const posConstsKeys = Object.keys(players);
+        posConstsKeys.forEach((key) => {
+        let posConstsKey = Object.keys(players[key]);
+        posConstsKey.some((keyN) => {
+            if (~keyN.indexOf("GK") || ~keyN.indexOf("DEF") || ~keyN.indexOf("MID") || ~keyN.indexOf("FWD")) {
+                model.constraints[keyN] = {"max": 1};
+            }
+        });
+    });
     let result = solver.Solve(model);
-    console.log(model, result);
-    return result;
+    
+    const resultKeys = Object.keys(result).slice(0, 11);
+    let finalPlayers = [];
+
+    for (const key in resultKeys) {
+        let _key = parseInt(resultKeys[key]);
+        finalPlayers.push(players[_key]);
+    }
+    return finalPlayers;
 }
 
 const RatePlayers = async () => {
