@@ -15,7 +15,6 @@ const TOTS = () => {
 
     return ( 
         <div>
-            <h2>Tests</h2>
             <table className="totsTable"> 
                     <thead>
                         <tr>
@@ -26,6 +25,7 @@ const TOTS = () => {
                             <th>Player</th>
                             <th>Pts</th>
                             <th>Form</th>
+                            <th>Value Index</th>
                         </tr>
                     </thead>
                     <tbody>

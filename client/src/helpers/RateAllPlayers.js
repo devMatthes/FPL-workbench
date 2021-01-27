@@ -20,9 +20,6 @@ let teamStrength = 0;
 let teamAttack = 0;
 let teamDefense = 0;
 let teamFixes = 0;
-let size = 15;
-let budget = 1000;
-let currentBudget = 0;
 
 function RatePlayer(item) {
     let matchesPlayed = currentGameweek;
